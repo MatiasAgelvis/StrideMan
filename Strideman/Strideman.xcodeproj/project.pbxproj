@@ -6,8 +6,15 @@
 	objectVersion = 90;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		39063EA63088F37E006269B3 /* alexrockbeat-alexrockbeat-running-560959.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 39063EA43088F37E006269B3 /* alexrockbeat-alexrockbeat-running-560959.mp3 */; };
+		39063EA73088F37E006269B3 /* kulakovka-forest-295910.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 39063EA53088F37E006269B3 /* kulakovka-forest-295910.mp3 */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		000000000000000000000120 /* Strideman.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Strideman.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		39063EA43088F37E006269B3 /* alexrockbeat-alexrockbeat-running-560959.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "alexrockbeat-alexrockbeat-running-560959.mp3"; sourceTree = "<group>"; };
+		39063EA53088F37E006269B3 /* kulakovka-forest-295910.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "kulakovka-forest-295910.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -31,6 +38,7 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000010 /* Strideman */,
+				39063EA83088F388006269B3 /* Audio */,
 				000000000000000000000020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +49,15 @@
 				000000000000000000000120 /* Strideman.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		39063EA83088F388006269B3 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				39063EA43088F37E006269B3 /* alexrockbeat-alexrockbeat-running-560959.mp3 */,
+				39063EA53088F37E006269B3 /* kulakovka-forest-295910.mp3 */,
+			);
+			path = Audio;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,6 +119,8 @@
 		000000000000000140000000 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
+				39063EA63088F37E006269B3 /* alexrockbeat-alexrockbeat-running-560959.mp3 in Resources */,
+				39063EA73088F37E006269B3 /* kulakovka-forest-295910.mp3 in Resources */,
 			);
 		};
 /* End PBXResourcesBuildPhase section */
