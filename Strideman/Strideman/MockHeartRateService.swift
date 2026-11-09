@@ -1,3 +1,5 @@
+#if DEBUG
+
 import Foundation
 
 /// Development fixture: produces a smooth, physiologically plausible heart rate
@@ -49,3 +51,5 @@ final class MockHeartRateService: HeartRateProviding {
         }
     }
 }
+
+#endif

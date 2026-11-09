@@ -8,7 +8,9 @@ final class HeartRateViewModel {
 
     // Compile-time selection of the heart rate source.
     // The view model only knows the protocol, never the concrete type.
-    #if targetEnvironment(simulator)
+    // Only Debug builds running on the simulator use the mock.
+    // Release builds never compile the fixture into the app.
+    #if DEBUG && targetEnvironment(simulator)
     private let service: any HeartRateProviding = MockHeartRateService()
     #else
     private let service: any HeartRateProviding = HealthKitHeartRateService()
