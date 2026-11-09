@@ -1,7 +1,7 @@
 import Foundation
 import HealthKit
 
-final class HeartRateService {
+final class HealthKitHeartRateService: HeartRateProviding {
     private let healthStore = HKHealthStore()
     // .heartRate is a defined constant in HKQuantityTypeIdentifier
     // quantityType(forIdentifier:) returns HKQuantityType? (optional).
@@ -73,15 +73,4 @@ final class HeartRateService {
         }
     }
 
-    func mockHeartRateStream() -> AsyncStream<Double> {
-        AsyncStream { continuation in
-            Task {
-                while !Task.isCancelled {
-                    let bpm = Double.random(in: 65...180)
-                    continuation.yield(bpm)
-                    try? await Task.sleep(for: .seconds(1))
-                }
-            }
-        }
-    }
 }
