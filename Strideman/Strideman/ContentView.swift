@@ -12,7 +12,9 @@ struct ContentView: View {
     // In SwiftUI structs, the struct itself is immutable (`self` cannot be mutated inside `var body`).
     // `@State` tells SwiftUI to allocate and manage this variable in external persistent memory
     // outside the struct lifecycle, so it survives view re-creations!
-    @State private var heartRateViewModel = HeartRateViewModel()
+    @State private var heartRateViewModel = HeartRateViewModel(
+        service: AppDependencies.heartRateService
+    )
     @State private var audioViewModel = AudioPlayerViewModel()
 
     // `var body: some View`: An opaque return type.
@@ -34,6 +36,9 @@ struct ContentView: View {
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
             .task {
                 await heartRateViewModel.start()
+            }
+            .onDisappear {
+                heartRateViewModel.stop()
             }
 
             Divider()
