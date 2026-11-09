@@ -6,26 +6,25 @@ import Observation
 final class HeartRateViewModel {
     private(set) var currentBPM: Double = 0
 
-    // Compile-time selection of the heart rate source.
     // The view model only knows the protocol, never the concrete type.
-    // Only Debug builds running on the simulator use the mock.
-    // Release builds never compile the fixture into the app.
-    #if DEBUG && targetEnvironment(simulator)
-    private let service: any HeartRateProviding = MockHeartRateService()
-    #else
-    private let service: any HeartRateProviding = HealthKitHeartRateService()
-    #endif
-
+    private let service: any HeartRateProviding
     private var streamTask: Task<Void, Never>?
 
-    func start() async {
-        let authorized = await service.requestAuthorization()
-        guard authorized else { return }
+    init(service: any HeartRateProviding) {
+        self.service = service
+    }
 
-        let stream = service.heartRateStream()
+    func start() async {
+        // Starting twice would create two streams. Bail out early, and check
+        // again after the await in case another start() interleaved there.
+        guard streamTask == nil else { return }
+
+        let authorized = await service.requestAuthorization()
+        guard authorized, !Task.isCancelled else { return }
+        guard streamTask == nil else { return }
 
         streamTask = Task {
-            for await bpm in stream {
+            for await bpm in service.heartRateStream() {
                 currentBPM = bpm
             }
         }
@@ -33,5 +32,6 @@ final class HeartRateViewModel {
 
     func stop() {
         streamTask?.cancel()
+        streamTask = nil
     }
 }
