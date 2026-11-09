@@ -30,6 +30,10 @@ struct ContentView: View {
 
                 Text("\(Int(heartRateViewModel.currentBPM)) BPM")
                     .font(.system(size: 44, weight: .bold, design: .rounded))
+
+                Text("Zone \(heartRateViewModel.currentZone.rawValue) · \(heartRateViewModel.currentZone.name)")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
             .padding()
             .frame(maxWidth: .infinity)

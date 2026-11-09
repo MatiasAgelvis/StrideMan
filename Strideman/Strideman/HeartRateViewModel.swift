@@ -6,6 +6,9 @@ import Observation
 final class HeartRateViewModel {
     private(set) var currentBPM: Double = 0
 
+    /// The zone for the current reading (computed, so it never goes stale).
+    var currentZone: HeartRateZone { HeartRateZone(bpm: currentBPM) }
+
     // The view model only knows the protocol, never the concrete type.
     private let service: any HeartRateProviding
     private var streamTask: Task<Void, Never>?
