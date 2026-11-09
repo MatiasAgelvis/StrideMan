@@ -4,7 +4,7 @@ import Observation
 // Macro to track changes in the view model
 @Observable
 final class HeartRateViewModel {
-    var currentBPM: Double = 0
+    private(set) var currentBPM: Double = 0
 
     // Compile-time selection of the heart rate source.
     // The view model only knows the protocol, never the concrete type.
