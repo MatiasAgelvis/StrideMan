@@ -6,7 +6,7 @@ import Observation
 final class HeartRateViewModel {
     var currentBPM: Double = 0
 
-    private let service = HeartRateService()
+    private let service = HealthKitHeartRateService()
     private var streamTask: Task<Void, Never>?
 
     func start() async {

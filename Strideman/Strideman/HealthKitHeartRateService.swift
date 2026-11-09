@@ -1,7 +1,7 @@
 import Foundation
 import HealthKit
 
-final class HeartRateService {
+final class HealthKitHeartRateService: HeartRateProviding {
     private let healthStore = HKHealthStore()
     // .heartRate is a defined constant in HKQuantityTypeIdentifier
     // quantityType(forIdentifier:) returns HKQuantityType? (optional).
