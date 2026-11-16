@@ -5,6 +5,7 @@ import Observation
 @Observable
 final class HeartRateViewModel {
     private(set) var currentBPM: Double = 0
+    private(set) var isMonitoring: Bool = false
 
     /// The zone for the current reading (computed, so it never goes stale).
     var currentZone: HeartRateZone { HeartRateZone(bpm: currentBPM) }
@@ -26,6 +27,7 @@ final class HeartRateViewModel {
         guard authorized, !Task.isCancelled else { return }
         guard streamTask == nil else { return }
 
+        isMonitoring = true
         streamTask = Task {
             for await bpm in service.heartRateStream() {
                 currentBPM = bpm
@@ -36,5 +38,6 @@ final class HeartRateViewModel {
     func stop() {
         streamTask?.cancel()
         streamTask = nil
+        isMonitoring = false
     }
 }

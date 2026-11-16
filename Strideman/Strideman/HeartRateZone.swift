@@ -8,7 +8,7 @@
 ///
 /// This is a *value type*: creating or copying a zone is like copying an int,
 /// not allocating an object on the heap.
-enum HeartRateZone: Int {
+enum HeartRateZone: Int, CaseIterable, Identifiable {
     // `: Int` declares the raw-value type, so each case carries an Int.
     // Read it back later with `zone.rawValue`.
     case zone1 = 1
@@ -16,6 +16,8 @@ enum HeartRateZone: Int {
     case zone3 = 3
     case zone4 = 4
     case zone5 = 5
+
+    var id: Int { rawValue }
 
     /// Human-readable zone label.
     /// `var name: String { ... }` is a computed property.
