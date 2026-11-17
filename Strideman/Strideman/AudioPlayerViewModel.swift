@@ -48,6 +48,7 @@ enum AudioTrack: String, CaseIterable, Identifiable {
 // The compiler automatically tracks property access on stored properties (`currentTrack`, `isPlaying`).
 // When any SwiftUI view reads these properties, SwiftUI automatically records the dependency.
 // Whenever `currentTrack` or `isPlaying` changes, SwiftUI re-renders ONLY the views that read them!
+@MainActor
 @Observable
 final class AudioPlayerViewModel {
     private let service = AudioPlayerService()
@@ -55,6 +56,16 @@ final class AudioPlayerViewModel {
     var currentTrack: AudioTrack?
 
     var isPlaying: Bool = false
+
+    /// Default song playlists mapped by HeartRateZone (Zone 1 through 5).
+    /// Users can append tracks to any zone list.
+    var zonePlaylists: [HeartRateZone: [AudioTrack]] = [
+        .zone1: [.forest],
+        .zone2: [.forest],
+        .zone3: [.forest, .running],
+        .zone4: [.running],
+        .zone5: [.running]
+    ]
 
     init() {
         // MARK: - ARC & `[weak self]` (Avoiding Retain Cycles / Memory Leaks)
@@ -96,5 +107,39 @@ final class AudioPlayerViewModel {
     /// Convenience helper to check if a specific track is playing.
     func isTrackPlaying(_ track: AudioTrack) -> Bool {
         currentTrack == track && isPlaying
+    }
+
+    /// Adds a track to the playlist for a specified heart rate zone.
+    func addTrack(_ track: AudioTrack, to zone: HeartRateZone) {
+        zonePlaylists[zone, default: []].append(track)
+    }
+
+    /// Removes a track at a specific index from a zone's playlist.
+    func removeTrack(at index: Int, from zone: HeartRateZone) {
+        guard var list = zonePlaylists[zone], list.indices.contains(index) else { return }
+        list.remove(at: index)
+        zonePlaylists[zone] = list
+    }
+
+    /// Plays a track designated for the specified heart rate zone.
+    /// If songs exist for this zone, it plays the first track (or current/next track in list).
+    func playSong(for zone: HeartRateZone) {
+        guard let tracks = zonePlaylists[zone], !tracks.isEmpty else {
+            return
+        }
+
+        // If the current track is already in this zone's playlist and playing, keep it playing.
+        if let current = currentTrack, tracks.contains(current), isPlaying {
+            return
+        }
+
+        // Otherwise, select and play the first track in the zone list.
+        if let trackToPlay = tracks.first {
+            let started = service.play(resourceName: trackToPlay.rawValue, fileExtension: "mp3")
+            if started {
+                currentTrack = trackToPlay
+                isPlaying = true
+            }
+        }
     }
 }
